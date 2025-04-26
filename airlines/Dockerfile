@@ -16,6 +16,12 @@ FROM openjdk:17-jdk-slim
 # Set the working directory for the runtime container
 WORKDIR /app
 
+COPY grafana-opentelemetry-java.jar grafana-opentelemetry-java.jar 
+ENV OTEL_LOGS_EXPORTER="otlp"
+ENV OTEL_RESOURCE_ATTRIBUTES="service.name=airlines,service.namespace=povsim-application-group,deployment.environment=production"
+ENV OTEL_EXPORTER_OTLP_ENDPOINT="http://alloy:4318"
+ENV OTEL_EXPORTER_OTLP_PROTOCOL="http/protobuf"
+
 # Copy the JAR file from the build stage
 COPY --from=build /app/build/libs/*.jar app.jar
 
@@ -23,4 +29,4 @@ COPY --from=build /app/build/libs/*.jar app.jar
 EXPOSE 8080
 
 # Set the command to run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-javaagent:grafana-opentelemetry-java.jar", "-jar", "app.jar"]
