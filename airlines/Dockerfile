@@ -18,6 +18,7 @@ WORKDIR /app
 
 COPY grafana-opentelemetry-java.jar grafana-opentelemetry-java.jar 
 ENV OTEL_LOGS_EXPORTER="otlp"
+ENV OTEL_PROFILING_ENABLED="true"
 ENV OTEL_RESOURCE_ATTRIBUTES="service.name=airlines,service.namespace=povsim-application-group,deployment.environment=production"
 ENV OTEL_EXPORTER_OTLP_ENDPOINT="http://alloy:4318"
 ENV OTEL_EXPORTER_OTLP_PROTOCOL="http/protobuf"
